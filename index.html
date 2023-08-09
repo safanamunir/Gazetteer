@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    
+	<title>Gazetteer</title>
+	<meta name="author" content="LovedeepSaini">
+	<!--favicon-->
+	<link rel="icon" type="image" href="img/earth1.png"/>
+	<!--leaflet-->
+    <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
+    <!--easy buttons-->
+    <link rel="stylesheet" href="libs/leaflet/easybutton.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+	<!--marker clusters-->
+	<link rel="stylesheet" href="libs/leaflet/MarkerCluster.css">
+	<link rel="stylesheet" href="libs/leaflet/MarkerCluster.Default.css">
+    
+   <link rel="stylesheet" href="styles.css">
+   <!-- Latest compiled and minified CSS -->
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+   <!--easy button-->
+   <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/starter-template/">
+	<!-- Bootstrap core CSS -->
+   
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+ </head>
+  <body>
+    <div class="preloader">
+      <h1 class="textpre">Welcome to Gazetteer</h1>
+    	<!-- <h4 class="parapre">Page loading.........</h4> -->
+	</div>
+   
+    <nav class="navbar">
+      <div class="pagetitle"><i class="fa-solid fa-earth-europe" style="color:rgb(26, 50, 204)"></i>  Gazetteer</div>
+      <a href="#" class="toggle-button" >
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </a>
+      <div class="navbar-links">
+      
+        <select  class= 'form-control' id="country-dropdown" >
+            <option value=" " >
+              Pick a Country...
+            </option>
+         </select>
+		
+	  
+       
+      <!--  Country Information Modal -->
+     <div class="modal " tabindex="-1" role="dialog" id="mymodal2">
+        <div class="modal-dialog modal-dialog-scrollable" role="document" >
+          <div class="modal-content animated zoomIn">
+            <div class="modal-header">
+			
+              <h4 class="modal-title" id="country_name">Country Information</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body bodyView">
+  
+    
+              <table class="table table-striped">
+								
+
+								<tbody class="countryInfo">
+									<tr>
+										<td><i class="fa-solid fa-earth-europe" style="color:blue"></i></td>
+										<th scope="row">Country Code</th>
+										<td id="txtCode"></td>
+									</tr>
+									<tr>
+										<td><i class="fa-solid fa-earth-europe" style="color:blue"></i></td>
+										<th scope="row">Continent</th>
+										<td id="txtContinent"></td>
+									</tr>
+									<tr>
+										<td><i class="fa-solid fa-city" style="color:brown"></i></td>
+										<th scope="row">Capital City</th>
+										<td id="txtCapital"></td>
+									</tr>
+								
+									<tr>
+										<td><i class="fa-solid fa-earth-asia " style="color:blueviolet"></i></td>
+										<th scope="row">Population</th>
+										<td id="txtPopulation"></td>
+									</tr>
+									<tr>
+										<td><i class="fa-solid fa-earth-asia " style="color:rgb(226, 43, 98)"></i></td>
+										<th scope="row">Area</th>
+										<td id="txtArea"></td>
+									</tr>
+									<tr>
+										<td><i class="fa-solid fa-language" style="color:chartreuse"></i></td>
+										<th scope="row">Language</th>
+										<td id="txtLanguages"></td>
+									</tr>
+									<tr>
+										<td><i class="fa-solid fa-coins" style="color:rgb(173, 176, 7)"></i></td>
+										<th scope="row">Currency </th>
+										<td id="txtCurrency"></td>
+									</tr>
+                				  
+
+								</tbody>
+							</table>
+							<div class="modal-footer">
+								<button type="button"  data-dismiss="modal">Close</button>
+							</div>	
+
+					 </div>
+					 
+				</div>
+				</div>
+			</div>
+		<!-- Weather Modal-->
+		<div class="modal " tabindex="-1" role="dialog" id="weatherModal">
+			<div class="modal-dialog modal-dialog-scrollable" role="document" >
+			  <div class="modal-content animated zoomIn">
+				<div class="modal-header">
+				
+				  <h4 class="modal-title" id="wikipediainfo">Weather Information</h4>
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				
+					<div class="modal-body">
+						
+
+						<table class="table table-striped">
+							<tbody class="wikipediaInfo"></tbody>
+							<tr>
+								<td><i class="fa-solid fa-cloud" style="color:cadetblue"></i></td>
+								<td scope="row">
+								  Clouds 
+								</td>
+								<td id="txtclouds">
+								  
+								</td>
+					  
+							  </tr>
+					  
+							  <tr>
+								  <td><i class="fa-solid fa-temperature-half" style="color:yellow"></i></td>
+								<td  scope="row">
+								  Temperature(&deg;C)
+								</td>
+								<td id="txttemperature">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-droplet" style="color:blue"></i></td>
+								<td  scope="row">
+								  Humidity(%) 
+								</td>
+								<td id="txthumidity">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-wind" style="color:aqua"></i></td>
+								<td scope="row">
+								  Wind Speed(km/h)
+								</td>
+								<td id="txtwindspeed">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-droplet-degree" style="color:darkblue"></i></td>
+								<td  scope="row">
+								  Dew Point 
+								</td>
+								<td id="txtdewpoint">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-building" style="color:brown"></i></td>
+								<td  scope="row">
+								  Weather Station
+								</td>
+								<td id="txtstationname">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-wind" style="color:chartreuse"></i></td>
+								<td  scope="row">
+								  Wind Direction(degrees)
+								</td>
+								<td id="txtwinddirection">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-calendar-clock"></i></td>
+								<td  scope="row">
+								  Date and Time
+								</td>
+								<td id="txtdatetime">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-cloud-sun-rain" style="color:cornflowerblue"></i></td>
+								<td  scope="row">
+								  Weather Condition
+								</td>
+								<td id="txtweathercondition">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-earth-americas" style=" color:darkorchid"></i></td>
+								<td  scope="row">
+								  Country Code
+								</td>
+								<td id="txtcountrycode">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-earth-americas" style="color:coral"></i></td>
+								<td  scope="row">
+								  ICAO 
+								</td>
+								<td id="txticao">
+								  
+								</td>
+					  
+							  </tr>
+							  <tr>
+								  <td><i class="fa-solid fa-earth-americas" style="color:royalblue"></i></td>
+								<td  scope="row">
+								  Clouds code 
+								</td>
+								<td id="txtcloudscode">
+								  
+								</td>
+					  
+							  </tr>
+							</tbody>
+						</table>
+						<div class="modal-footer">
+							<button type="button"  data-dismiss="modal">Close</button>
+						</div>	
+
+				 </div>
+				 
+			</div>
+			</div>
+		</div>
+					  
+						
+						
+
+      <!--news-->
+	  <div class="modal " tabindex="-1" role="dialog" id="mymodal3">
+		<div class="modal-dialog modal-dialog-scrollable" role="document" >
+		  <div class="modal-content animated zoomIn">
+			<div class="modal-header">
+			
+			  <h4 class="modal-title" id="news">Latest Top News </h4>
+			  
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+          <div class="modal-body">
+           
+			<table class="table">
+				<td  scope="row">
+					Country Code
+				  </td>
+				  <td id="txtcountry">
+					
+				  </td>
+				
+
+				<tbody class="newsTable">
+					
+					<tr>
+						<td rowspan="3" colspan="2">
+							<a id="article1Link" target="_blank"> 
+								<img id="article1Img" class="newsImage" alt="News Article 1 Image">
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td id="article1Title" class="newsTitle" colspan="2"></td>
+					</tr>
+					
+
+				</tbody>
+			</table>
+
+           
+			<div class="modal-footer">
+				<button type="button"  data-dismiss="modal">Close</button>
+			</div>	
+
+	 </div>
+	 
+</div>
+</div>
+</div>
+<!--timezone-->
+<div class="modal " tabindex="-1" role="dialog" id="mymodal8">
+	<div class="modal-dialog modal-dialog-scrollable" role="document" >
+	  <div class="modal-content animated zoomIn">
+		<div class="modal-header">
+		
+		  <h4 class="modal-title" id="news">Timezones</h4>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body bodyView">
+
+
+		  <table class="table table-striped">
+							
+
+							<tbody class="wikipediaInfo">
+								
+								<tr>
+									<th scope="row">Timezone id</th>
+									<td id="txtid"></td>
+								</tr>
+							
+								<tr>
+									<th scope="row">Time</th>
+									<td id="txttime"></td>
+								</tr>
+								<tr>
+									<th scope="row">Sunrise</th>
+									<td id="txtrise"></td>
+								</tr>
+								<tr>
+									<th scope="row">Sunset</th>
+									<td id="txtset"></td>
+								</tr>
+							</tbody>
+						</table>
+			
+					   
+						<div class="modal-footer">
+							<button type="button"  data-dismiss="modal">Close</button>
+						</div>	
+			
+				 </div>
+				 
+			</div>
+			</div>
+			</div>
+
+	
+      <!--wikipedia info-->
+      <div class="modal " tabindex="-1" role="dialog" id="mymodal4">
+		<div class="modal-dialog modal-dialog-scrollable" role="document" >
+		  <div class="modal-content animated zoomIn">
+			<div class="modal-header">
+			
+			  <h4 class="modal-title" id="news">Wikipedia Information</h4>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+            <div class="modal-body bodyView">
+  
+    
+              <table class="table table-striped">
+								
+
+								<tbody class="wikipediaInfo">
+									<tr>
+										<th scope="row">Latitude</th>
+										<td id="txtlatitude2"></td>
+									</tr>
+									<tr>
+										<th scope="row">Longitude</th>
+										<td id="txtlongitude2"></td>
+									</tr>
+								
+									<tr>
+										<th scope="row">Elevation</th>
+										<td id="txtelevation"></td>
+									</tr>
+									<tr>
+										<th scope="row">Place</th>
+										<td id="txttitle"></td>
+									</tr>
+									<tr>
+										<th scope="row">Features</th>
+										<td id="txtfeature"></td>
+									</tr>
+                					  <tr>
+										<th scope="row">Rank</th>
+										<td id="txtrank"></td>
+									</tr>
+                 					 <tr>
+										<th scope="row">Country Code</th>
+										<td id="txtcountrycode"></td>
+									</tr>
+								</tbody>
+							</table>
+
+														
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th scope="col" colspan="2">Summary</th>
+								  	</tr>
+								</thead>
+
+								<tbody >
+                				  <tr>
+										<th scope="row"> About Place</th>
+										<td id="txtsummary"></td>
+									</tr>
+                				</tbody>
+							</table>
+							<div class="modal-footer">
+								<button type="button"  data-dismiss="modal">Close</button>
+							</div>	
+	
+					 </div>
+					 
+				</div>
+				</div>
+			</div>
+						  
+     </nav>
+
+    <main>
+      <div class="wrapper">
+      <div id="map">
+         <div class="leaflet-control coordinate"></div>
+    
+    </div>
+  </div>
+</main>
+<!--leaflet-->
+<script src="libs/leaflet/leaflet.js"></script>
+<script src="libs/leaflet/easybutton.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+
+<!-- jQuery library -->
+<script src="libs/js/jquery-2.2.3.min.js"></script>
+
+<!-- Popper JS -->
+<script src=https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js></script>
+<!--font awesome-->
+<script src=https://kit.fontawesome.com/2f03d86d1c.js crossorigin="anonymous"></script>
+
+ <!-- Latest compiled JavaScript -->
+<script src=https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js></script>
+
+<!--leaflet plugins-->
+<script type="text/javascript" src="libs/js/date.js"></script>
+<script type="text/javascript" src="libs/js/extras.js"></script>
+<script type="text/javascript" src="libs/js/en-Us.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/1.26.0/luxon.min.js"></script>
+ <script src=https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js></script>
+
+<script src="libs/js/script.js"></script>
+<script src="/index.js"></script>
+</body>
+</html>
